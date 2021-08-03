@@ -1,0 +1,23 @@
+{
+  "name": "mean_api_starter",
+  "version": "1.0.0",
+  "description": "A starter/boilerplate code for MEAN stack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "MEAN",
+    "MongoDB",
+    "Express",
+    "Angular",
+    "Node"
+  ],
+  "author": "Alula K",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^4.0.1"
+  }
+}
