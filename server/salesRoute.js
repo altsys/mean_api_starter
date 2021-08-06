@@ -5,9 +5,16 @@ const router = express.Router();
 
 //Return all sales with limit and pagination.
 router.get("/", async (req, res) => {
+    const page = req.query.page ? parseInt(req.query.page): 2;
+    const perpage = req.query.perpage ? parseInt(req.query.perpage) : 13;
+    const sortBy = req.query.sortBy ? req.query.sortBy : 'salesDate';
+    const sortOrder = req.query.sortOrder ? req.query.sortOrder : 'asc';
+
     try {
-        const sales = await Sales.find().limit(100);        
-        res.status(200).json({ sales });
+        const sales = await Sales.find().limit(perpage)
+        .skip(perpage * page).sort(sortBy);
+        //TODO:Make sorting part of the API Call        
+        res.status(200).json({ sales: sales, count: sales.length});
     } catch (err) {
         res.status(404).json({ message: "404. Resource Not Found.", error: err });
     }
