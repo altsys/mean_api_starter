@@ -1,36 +1,31 @@
 import express from "express";
 import Sales from "./models/SalesModel.js";
-
+import pagination from "./utils/pagination.js";
+import { errorResponse, successResponse, notFoundResponse } from "./utils/responseMessages.js";
 const router = express.Router();
 
 //Return all sales with limit and pagination.
 router.get("/", async (req, res) => {
-    const page = req.query.page ? parseInt(req.query.page): 2;
-    const perpage = req.query.perpage ? parseInt(req.query.perpage) : 13;
-    const sortBy = req.query.sortBy ? req.query.sortBy : 'salesDate';
-    const sortOrder = req.query.sortOrder ? req.query.sortOrder : 'asc';
-
     try {
-        const sales = await Sales.find().limit(perpage)
-        .skip(perpage * page).sort(sortBy);
-        //TODO:Make sorting part of the API Call        
-        res.status(200).json({ sales: sales, count: sales.length});
-    } catch (err) {
-        res.status(404).json({ message: "404. Resource Not Found.", error: err });
+        const paging = await pagination(req);
+        const sales = await Sales.find().limit(paging.perpage)
+        .skip(paging.perpage * paging.page).sort(paging.sortBy);
+        notFoundResponse(res, sales);
+        successResponse(res, sales);
+    } catch (error) {
+        errorResponse(res, error);
     }
 });
 
 //Filter sales record using different filtering parameters.
 router.get("/filter", async (req, res) => {
     try {
-        const sales = await Sales.find(req.body.filterBy).limit(10);
-        if (sales) {
-            res.status(200).json({sales});
-        } else {
-            res.status(404).json({Message: "Resource Not Found"});
-        }
+        const paging = await pagination(req);
+        const sales = await Sales.find(req.body.filterBy).limit(paging.perpage).skip(paging.perpage * paging.page).sort(paging.sortBy);
+        notFoundResponse(res, sales);
+        successResponse(res, sales);   
     } catch (error) {
-        res.status(500).json({error: error});
+        errorResponse(res, error);
     }
 });
 
@@ -38,35 +33,21 @@ router.get("/filter", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const sale = await Sales.findById(req.params.id);
-        if (sale) {
-            res.status(200).json({sale});
-        } else {
-            res.status(404).json({Message: "Resource Not Found"});
-        }
+        notFoundResponse(res, sale);
+        successResponse(res, sale);
     } catch (error) {
-        res.status(500).json({error: error});
+        errorResponse(res, error);
     }
 });
 
 //Create a sales
 router.post("/", async (req, res) => {
-    const sales = new Sales({
-        salesDate: req.body.salesDate,
-        items: req.body.items,
-        storeLocation: req.body.storeLocation,
-        customer: req.body.customer,
-        couponUsed: req.body.couponUsed,
-        purchaseMethod: req.body.purchaseMethod,
-    });
+    const sales = new Sales(req.body);
     try {
         const createdSales = await sales.save();
-        if (createdSales) {
-            res.status(201).json({message: "New Sales Successully Created.", createdSales});
-        } else {
-            res.status(202).json({message: "Not successfully created."});
-        }
+        successResponse(res, createdSales, 201)
     } catch (error) {
-        res.status(500).json({error: error});
+        errorResponse(500);
     }
 });
 
@@ -77,7 +58,7 @@ router.patch('/:id', async (req, res) => {
             { _id: req.params.id },
             {
                 $set: {
-                    salesDate: req.body.salesDate,
+                    saleDate: req.body.saleDate,
                     items: req.body.items,
                     storeLocation: req.body.storeLocation,
                     customer: req.body.customer,
@@ -86,9 +67,9 @@ router.patch('/:id', async (req, res) => {
                 }
             }
         );
-        res.status(200).json({ message: "Sales is successfully updated.", sales: patchedSales })
+        successResponse(res, patchedSales);
     } catch (error) {
-        res.status(500).json({ message: "Sales is successfully not updated.", error: error });
+        errorResponse(res, error);
     }
 });
 
@@ -97,8 +78,9 @@ router.delete("/:id", async (req, res) => {
     try {
         const deletedSales = await Sales.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Sales is successfully deleted.", sales: deletedSales });
+        successResponse(res, deletedSales);
     } catch (error) {
-        res.status(500).json({ message: "Sales is not deleted. ", error: error });
+        errorResponse(res, error);
     }
 });
 
