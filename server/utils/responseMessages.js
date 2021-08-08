@@ -16,19 +16,19 @@ function errorMesssages(statusCode) {
         503: "Service Unavailable. Something unexpected happened."
     }[statusCode]
 }
-export const successResponse = (res, sales, statusCode) => {
+export const successResponse = (res, resource, statusCode) => {
     statusCode = statusCode || 200;
-    res.status(statusCode).json({ count: sales.length, sales });
+    res.status(statusCode).json({ count: resource.length, resource });
 };
 export const errorResponse = (res, error, statusCode) =>  {
     statusCode = statusCode || 500;
     const msg = errorMesssages(statusCode);
     res.status(statusCode).json({ msg, error: error });
 };
-export const notFoundResponse = (res, sales, statusCode) => {
+export const notFoundResponse = (res, resource, statusCode) => {
     statusCode = statusCode || 404;
     const msg = errorMesssages(statusCode);
-    if (!sales || sales.length === 0) {
+    if (!resource || resource.length === 0) {
         res.status(404).json({ msg });
     }
 }

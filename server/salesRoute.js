@@ -1,15 +1,16 @@
 import express from "express";
 import Sales from "./models/SalesModel.js";
 import pagination from "./utils/pagination.js";
+import auth from "./middleware/authorization.js"
 import { errorResponse, successResponse, notFoundResponse } from "./utils/responseMessages.js";
 const router = express.Router();
 
 //Return all sales with limit and pagination.
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
-        const paging = await pagination(req);
-        const sales = await Sales.find().limit(paging.perpage)
-        .skip(paging.perpage * paging.page).sort(paging.sortBy);
+        const {perpage, page, sortBy} = await pagination(req);
+        const sales = await Sales.find().limit(perpage)
+        .skip(perpage * page).sort(sortBy);
         notFoundResponse(res, sales);
         successResponse(res, sales);
     } catch (error) {
@@ -18,10 +19,10 @@ router.get("/", async (req, res) => {
 });
 
 //Filter sales record using different filtering parameters.
-router.get("/filter", async (req, res) => {
+router.get("/filter", auth, async (req, res) => {
     try {
-        const paging = await pagination(req);
-        const sales = await Sales.find(req.body.filterBy).limit(paging.perpage).skip(paging.perpage * paging.page).sort(paging.sortBy);
+        const {perpage, page, sortBy} = await pagination(req);
+        const sales = await Sales.find(req.body.filterBy).limit(perpage).skip(perpage * page).sort(sortBy);
         notFoundResponse(res, sales);
         successResponse(res, sales);   
     } catch (error) {
@@ -30,7 +31,7 @@ router.get("/filter", async (req, res) => {
 });
 
 //Find a sales using id.
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
     try {
         const sale = await Sales.findById(req.params.id);
         notFoundResponse(res, sale);
@@ -41,18 +42,18 @@ router.get("/:id", async (req, res) => {
 });
 
 //Create a sales
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
     const sales = new Sales(req.body);
     try {
         const createdSales = await sales.save();
         successResponse(res, createdSales, 201)
     } catch (error) {
-        errorResponse(500);
+        errorResponse(res, error);
     }
 });
 
 //Update a sales
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
     try {
         const patchedSales = await Sales.updateOne(
             { _id: req.params.id },
@@ -74,7 +75,7 @@ router.patch('/:id', async (req, res) => {
 });
 
 //Remove or delete a sales record
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         const deletedSales = await Sales.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Sales is successfully deleted.", sales: deletedSales });

@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express from "express";
-import sales from "./salesRoute.js";
+import salesRoute from "./salesRoute.js";
+import userRoute from "./userRoute.js";
+
 import { errorResponse } from "./utils/responseMessages.js";
 
 dotenv.config();
@@ -15,17 +17,18 @@ const app = express();
 app.use(express.json());
 // app.use(pagination);
 
-app.use("/api/v1/sales", sales);
+app.use("/api/v1/sales", salesRoute);
+app.use("/api/v1/user", userRoute);
 app.get("/", (req, res) => {
     res.send("We are running on home.");
 });
-app.use("*", (req, res) => res.status(404).json({ error: "404. Resource Not Found." }));
+app.use("*", (req, res) => errorResponse(res, "", 404));
 
 mongoose.connect(uri,
         { useCreateIndex: true, useNewUrlParser:true, useUnifiedTopology: true })
         .then(() => console.log('Mongo DB Connected'))
         .catch((error)=> {
-            errorResponse(res, error, 502);
+            console.log(error);
         });
 
 app.listen(port, () => {
