@@ -1,0 +1,33 @@
+.deatil-heading {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1;
+  width: 100%;
+
+  .left,
+  .right {
+    width: 50%;
+
+    ul {
+      list-style: none;
+
+      li {
+        padding: 4px;
+      }
+    }
+  }
+}
+
+table {
+  border: 1px solid #999;
+  border-radius: 2px;
+  width: 100%;
+
+  tr {
+    border-bottom: 1px solid #969696;
+
+    td {
+      padding: 2em;
+    }
+  }
+}
