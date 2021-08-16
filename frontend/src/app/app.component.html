@@ -1,19 +1,15 @@
-<!-- <div class="container" style="display: flex;"> -->
-  <!-- Navbar -->
+<mat-card class="container main">
 
-  <!-- <app-navigation class="left-nav" style="flex: 0 0 25%;"></app-navigation>
-  <div class="container" style="flex: 1"> -->
-
-    <!-- Navbar -->
-    <!-- <div class="top-nav">
-      <app-nav-bar></app-nav-bar>
-    </div> -->
-
-    <!-- main -->
-    <!-- <app-sales></app-sales>
-
-
+  <div class="flex-left">
+    <nav class="nav">
+      <a routerLink="/dashboard">Dashboard</a>
+      <a routerLink="/sales-list">Sales</a>
+    </nav>
   </div>
-</div> -->
-<app-navigation></app-navigation>
-<router-outlet></router-outlet>
+  <div class="flex-right">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-card>
+
+
