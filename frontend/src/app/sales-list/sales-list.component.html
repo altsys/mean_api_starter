@@ -1,0 +1,32 @@
+<div class="container flex-right">
+  <h1>All Sales</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Customer Email</th>
+        <th>Store Location</th>
+        <th>Purchase Method</th>
+        <th>Product Count</th>
+        <th>Coupon Used</th>
+        <th>Sales Date</th>
+        <th>Make Changes</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sale of salesList; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{sale.customer.email}}</td>
+        <td>{{sale.storeLocation}}</td>
+        <td>{{sale.purchaseMethod}}</td>
+        <td>{{sale.items.length}}</td>
+        <td>{{sale.couponUsed ? 'Coupon': 'No Coupon'}}</td>
+        <td>{{sale.saleDate?? '' }}</td>
+        <td><button class="view" routerLink="/sales-detail/{{sale._id}}">View</button><button class="edit">Edit</button>
+        </td>
+        <td><button class="delete" (click)="deleteSale(sale)" title="Delete sales">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
