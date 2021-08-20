@@ -1,14 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+html,
+body {
   height: 100%;
   background-color: #202020;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  a {
+    text-decoration: none;
+  }
 }
-h1 {
+
+h1, p {
   font-size: 4em;
-  padding-bottom: 10px;
+  padding: 10px 0;
 }

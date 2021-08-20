@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SalesCreateNewComponent } from './sales-create-new/sales-create-new.component';
 import { SalesDetailComponent } from './sales-detail/sales-detail.component';
 import { SalesListComponent } from './sales-list/sales-list.component';
 
@@ -8,6 +9,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'sales-list', component: SalesListComponent},
+  {path: 'sales-create-new', component: SalesCreateNewComponent},
   {path: 'sales-detail/:id', component: SalesDetailComponent},
 ];
 

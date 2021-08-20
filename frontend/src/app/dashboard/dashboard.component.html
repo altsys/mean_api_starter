@@ -1,5 +1,39 @@
-<div class="container">
+<mat-card class="container">
   <h1>Dashboard</h1>
-  <p><span>Sales: </span> {{sales.length}}</p>
-  <p><span>Total: </span> {{sales.length}}</p>
-</div>
+  <div>
+    <h3>
+      <span>Total Number of Sales: </span> {{stat? stat.totalSales: ''}}
+    </h3>
+  </div>
+  <div class="dashboard">
+    <div class="cell">
+      <h3>Number of Sales By Purchase Method</h3>
+      <mat-list role="list" *ngFor="let method of stat? stat.salesByMethod : '' ">
+        <mat-list-item role="listitem">
+          <mat-chip>{{method._id}}</mat-chip>
+          <span>{{method.count}}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="cell">
+      <h3>Number of Sales By Location</h3>
+      <mat-list role="list" *ngFor="let loc of stat? stat.salesByLocation : '' ">
+        <mat-list-item role="listitem">
+          <mat-chip>{{loc._id}}</mat-chip>
+          <span>{{loc.count}}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <div class="cell">
+      <h3>Number of Sales By Coupon Used</h3>
+      <mat-list role="list" *ngFor="let cop of stat? stat.salesByCouponUsed : '' ">
+        <mat-list-item role="listitem">
+          <mat-chip>{{cop._id ? 'By Coupon' : 'Without Coupon'}}</mat-chip>
+          <span>{{cop.count}}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div class="cell"><span>Number of Sales By Customer: </span> {{stat? stat.totalByCouponUsed : ''}}</div>
+  </div>
+</mat-card>
