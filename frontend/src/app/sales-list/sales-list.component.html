@@ -1,32 +1,60 @@
-<div class="container flex-right">
-  <h1>All Sales</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Customer Email</th>
-        <th>Store Location</th>
-        <th>Purchase Method</th>
-        <th>Product Count</th>
-        <th>Coupon Used</th>
-        <th>Sales Date</th>
-        <th>Make Changes</th>
-        <th>Remove</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let sale of salesList; let i = index">
-        <td>{{i + 1}}</td>
-        <td>{{sale.customer.email}}</td>
-        <td>{{sale.storeLocation}}</td>
-        <td>{{sale.purchaseMethod}}</td>
-        <td>{{sale.items.length}}</td>
-        <td>{{sale.couponUsed ? 'Coupon': 'No Coupon'}}</td>
-        <td>{{sale.saleDate?? '' }}</td>
-        <td><button class="view" routerLink="/sales-detail/{{sale._id}}">View</button><button class="edit">Edit</button>
-        </td>
-        <td><button class="delete" (click)="deleteSale(sale)" title="Delete sales">Delete</button></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<mat-card class="container flex-right">
+<mat-card-header>
+  <mat-card-title>
+    <h1 class="detail">Suppliers Sales</h1>
+  </mat-card-title>
+</mat-card-header>
+<mat-card-content class="deatil-heading">
+  <div class="container flex-right mat-elevation-z8">
+    <table mat-table [dataSource]="salesList" matSort>
+      <!-- No. Column -->
+      <ng-container matColumnDef="No.">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let sale; let i = index"> {{i+1}} </td>
+      </ng-container>
+      <!-- Email Column -->
+      <ng-container matColumnDef="Customer Email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Email </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.customer.email}} </td>
+      </ng-container>
+      <!-- Store Location Column -->
+      <ng-container matColumnDef="Store Location">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Store Location </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.storeLocation}} </td>
+      </ng-container>
+      <!-- Purchase Method Column -->
+      <ng-container matColumnDef="Purchase Method">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchase Method </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.purchaseMethod}} </td>
+      </ng-container>
+      <!-- Product Count Column -->
+      <ng-container matColumnDef="Product Count">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Count </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.items.length}} </td>
+      </ng-container>
+      <!-- Coupon Used Column -->
+      <ng-container matColumnDef="Coupon Used">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Coupon Used </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.couponUsed}} </td>
+      </ng-container>
+      <!-- Sales Date Column -->
+      <ng-container matColumnDef="Sales Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sales Date </th>
+        <td mat-cell *matCellDef="let sale"> {{sale.saleDate?? ''}} </td>
+      </ng-container>
+
+      <!-- Make Changes Column -->
+      <ng-container matColumnDef="Make Changes">
+        <th mat-header-cell *matHeaderCellDef> Make Changes </th>
+        <td mat-cell *matCellDef="let sale">
+          <button mat-raised-button color="primary" class="view" routerLink="/sales-detail/{{sale._id}}">View</button>
+          <button mat-raised-button color="warn" (click)="deleteSale(sale)" title="Delete sales">Delete</button></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</mat-card-content>
+</mat-card>

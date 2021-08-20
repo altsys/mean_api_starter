@@ -1,31 +1,21 @@
 table {
-  margin: 2em 0;
-  thead {
-    background-color: #d6d6d6;
-  }
+  // margin: 2em 0;
+  width: 100%;
   tr {
-    padding: 1em;
     td, th {
-      padding: 1em;
+      padding: .5em;
     }
   }
   button {
     padding: 8px 15px;
-    font-size: 18px;
-    border-radius: 5px;
-    border: #888 .4px solid;
-    box-shadow: 2px 2px 1px 0px rgba(66, 66, 66, 0.749);
-
   }
   .edit, .view {
     margin: 0 5px;
-    background-color: rgb(207, 231, 187);
   }
   .delete {
     background-color: #e9a9a9;
   }
 }
 h1 {
-  font-size: 4em;
   padding-bottom: 10px;
 }

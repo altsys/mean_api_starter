@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { IntegerType } from 'mongodb';
 import { Sales } from '../models/Sales';
 import { SalesListService } from '../services/sales-list.service';
@@ -10,22 +13,27 @@ import { SalesListService } from '../services/sales-list.service';
 })
 export class SalesListComponent implements OnInit {
   salesList: Sales[] = [];
-  sale: any;
+  displayedColumns: string[] = ['No.', 'Customer Email', 'Store Location', 'Purchase Method', 'Product Count', 'Coupon Used', 'Sales Date', 'Make Changes'];
+  dataSource!: MatTableDataSource<Sales>;
 
-  constructor(private salesListService: SalesListService) {}
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  viewSale(sale: Sales) {
-    console.log('I will show');
+  constructor(private salesListService: SalesListService) {
+    this.dataSource = new MatTableDataSource(this.salesList);
   }
 
-  deleteSale(sale: Sales) {
-    console.log('I will delete');
-
-    // this.salesList = this.salesListServ.deleteSale(sale._id?).subscribe();
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
     this.getSales();
+  }
+
+  deleteSale(sale: Sales) {
+    this.salesListService.deleteSale(sale._id).subscribe();
   }
 
   /**

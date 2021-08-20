@@ -54,6 +54,13 @@ export class SalesListService {
     return this.http.patch(this.uri, sale, this.httpOptions);
   }
 
+  /**
+   * getSalesStat
+   */
+  public getSalesStat() {
+    return this.http.get(`${this.uri}/stat`);
+  }
+
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
 
