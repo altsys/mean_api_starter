@@ -14,15 +14,29 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
 
 import { SalesListService } from './services/sales-list.service';
 import { SalesListComponent } from './sales-list/sales-list.component';
-import { MatCardModule } from '@angular/material/card';
+import { SalesDetailComponent } from './sales-detail/sales-detail.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SalesCreateNewComponent } from './sales-create-new/sales-create-new.component';
+import { SalesItemComponent } from './sales-item/sales-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SalesListComponent
+    SalesListComponent,
+    SalesDetailComponent,
+    DashboardComponent,
+    SalesCreateNewComponent,
+    SalesItemComponent
   ],
   imports: [
     HttpClientModule,
@@ -38,7 +52,12 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCardModule
+    MatCardModule,
+    MatGridListModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [
     SalesListService

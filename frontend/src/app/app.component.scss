@@ -1,24 +1,31 @@
 .container {
   margin: 10px 2px;
-  background-color: lavender;
   border-radius: 1em;
-  padding: 2px 15px;
-  a {
-    display: flex;
-    margin: 18px 2px;
-    font-size: 18px;
+  padding: 2px 5px;
+  mat-list-item {
+    border-bottom: 1px solid #7b1fa2;
+    a {
+      display: flex;
+      margin: 18px 2px;
+      font-size: 18px;
+      color: #d165ff;
+    }
   }
 }
 .main {
   display: flex;
-  margin: 4em 2em;
+  margin: 25px 1px;
   .flex-left {
     width: 12%;
     height: 100vh;
+    margin: 0px 10px;
   }
   .flex-right {
     width: 88%;
     padding-top: 1em;
     margin-bottom: 6em;
+    h1 {
+      color: #424242;
+    }
   }
 }

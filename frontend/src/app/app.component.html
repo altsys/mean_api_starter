@@ -1,15 +1,16 @@
-<mat-card class="container main">
+<div class="container main">
 
   <div class="flex-left">
-    <nav class="nav">
-      <a routerLink="/dashboard">Dashboard</a>
-      <a routerLink="/sales-list">Sales</a>
-    </nav>
+    <mat-list role="list nav">
+      <mat-list-item role="listitem" ><a mat-list-item routerLink="/dashboard">Dashboard</a></mat-list-item>
+      <mat-list-item role="listitem"><a mat-list-item routerLink="/sales-list">Sales</a></mat-list-item>
+      <mat-list-item role="listitem"><a mat-list-item routerLink="/sales-list">Users</a></mat-list-item>
+    </mat-list>
   </div>
   <div class="flex-right">
     <router-outlet></router-outlet>
   </div>
 
-</mat-card>
+</div>
 
 
