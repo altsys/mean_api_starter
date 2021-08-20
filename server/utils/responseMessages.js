@@ -18,7 +18,7 @@ function errorMesssages(statusCode) {
 }
 export const successResponse = (res, resource, statusCode) => {
     statusCode = statusCode || 200;
-    res.status(statusCode).json({ count: resource.length, resource });
+    res.status(statusCode).json(resource);
 };
 export const errorResponse = (res, error, statusCode) =>  {
     statusCode = statusCode || 500;

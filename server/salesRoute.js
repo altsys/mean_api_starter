@@ -6,7 +6,7 @@ import { errorResponse, successResponse, notFoundResponse } from "./utils/respon
 const router = express.Router();
 
 //Return all sales with limit and pagination.
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const {perpage, page, sortBy} = await pagination(req);
         const sales = await Sales.find().limit(perpage)
@@ -14,6 +14,34 @@ router.get("/", auth, async (req, res) => {
         notFoundResponse(res, sales);
         successResponse(res, sales);
     } catch (error) {
+        errorResponse(res, error);
+    }
+});
+//Return all sales stat.
+router.get("/stat", async (req, res) => {
+    try {
+        const sales = await Sales.countDocuments();
+        const salesByMethod = await Sales.aggregate([
+            {$match: {}},
+            {$group: {_id: '$purchaseMethod', count: {$sum: 1}}}
+        ]);
+        const salesByCouponUsed = await Sales.aggregate([
+            {$match: {}},
+            {$group: {_id: '$couponUsed', count: {$sum: 1}}}
+        ]);
+        const salesByLocation = await Sales.aggregate([
+            {$match: {}},
+            {$group: {_id: '$storeLocation', count: {$sum: 1}}}
+        ]);
+        const salesByItem = await Sales.aggregate([
+            {$match: {}},
+            {$group: {_id: '$items.name', count: {$sum: 1}}}
+        ]);
+        // const salesByItem = await Sales.aggregate([]);
+        notFoundResponse(res, sales);
+        successResponse(res, {"totalSales": sales, salesByLocation, salesByMethod, salesByCouponUsed, salesByItem});
+    } catch (error) {
+        console.log(error);
         errorResponse(res, error);
     }
 });
@@ -31,7 +59,7 @@ router.get("/filter", auth, async (req, res) => {
 });
 
 //Find a sales using id.
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const sale = await Sales.findById(req.params.id);
         notFoundResponse(res, sale);
@@ -75,7 +103,7 @@ router.patch('/:id', auth, async (req, res) => {
 });
 
 //Remove or delete a sales record
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const deletedSales = await Sales.deleteOne({ _id: req.params.id });
         res.status(200).json({ message: "Sales is successfully deleted.", sales: deletedSales });
